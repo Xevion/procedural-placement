@@ -3,19 +3,20 @@ using System.Collections.Generic;
 using System.Net;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public enum SamplingTypes {
     Random,
     Poisson
 };
 
-public class CubeRendering : MonoBehaviour {
+public class PointRendering : MonoBehaviour {
     [Tooltip("The sampling method used to generate points")]
     public SamplingTypes samplingMethod = SamplingTypes.Random;
     [Tooltip("The number of points (spheres) placed inside the region")]
     public int numPoints = 100;
-    [Tooltip("The size of the rendered cubes")]
-    public float cubeSize = 1;
+    [Tooltip("The size of the rendered spheres")]
+    public float sphereSize = 1;
     [Tooltip("The Size of the region points are generated in")]
     public Vector2 regionSize = Vector2.one;
 
@@ -37,7 +38,7 @@ public class CubeRendering : MonoBehaviour {
 
             switch (samplingMethod) {
                 case SamplingTypes.Random:
-                    _points = PointGeneration.random_sampling(numPoints, regionSize, transform.position);
+                    _points = PointGeneration.random_sampling(numPoints, regionSize);
                     break;
                 case SamplingTypes.Poisson:
                     _points = new List<Vector2>();
@@ -51,12 +52,12 @@ public class CubeRendering : MonoBehaviour {
     private void OnDrawGizmos() {
         // Draw a wireframe around the entire region
         Gizmos.DrawWireCube(this.transform.position,
-            new Vector3(regionSize.x * 2 + cubeSize, regionSize.y * 2 + cubeSize, cubeSize));
+            new Vector3(regionSize.x * 2 + sphereSize, regionSize.y * 2 + sphereSize, sphereSize));
 
         // Render spheres at every point
         if (_points == null) return;
         var pos = transform.position;
         foreach (var point in _points)
-            Gizmos.DrawSphere(new Vector3(point.x + pos.x, point.y + pos.y, pos.z), cubeSize);
+            Gizmos.DrawSphere(new Vector3(point.x + pos.x, point.y + pos.y, pos.z), sphereSize);
     }
 }
