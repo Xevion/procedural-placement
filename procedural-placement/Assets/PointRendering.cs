@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Net;
-using UnityEditor;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 public enum SamplingTypes {
     Random,
