@@ -7,7 +7,8 @@ using UnityEngine.Serialization;
 
 public enum SamplingTypes {
     Random,
-    Poisson
+    Poisson,
+    Improved_Poisson
 };
 
 public class PointRendering : MonoBehaviour {
@@ -51,6 +52,10 @@ public class PointRendering : MonoBehaviour {
                     break;
                 case SamplingTypes.Poisson:
                     _points = PointGeneration.poisson_sampling(numPoints, regionSize, radius, retryAttempts);
+                    numPoints = _points.Count;
+                    break;
+                case SamplingTypes.Improved_Poisson:
+                    _points = PointGeneration.improved_poisson_sampling(numPoints, regionSize, radius, retryAttempts);
                     numPoints = _points.Count;
                     break;
                 default:

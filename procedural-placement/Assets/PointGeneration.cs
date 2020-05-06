@@ -34,7 +34,7 @@ public static class PointGeneration {
                 float angle = Random.value * Mathf.PI * 2; // Random radian angle
                 Vector2 dir = new Vector2(Mathf.Sin(angle), Mathf.Cos(angle));
                 Vector2 candidate = spawnCenter + dir * Random.Range(radius, radius * 2);
-                
+
                 if (poisson_valid(candidate, regionSize, cellSize, points, grid, radius)) {
                     points.Add(candidate);
                     spawnPoints.Add(candidate);
@@ -55,7 +55,7 @@ public static class PointGeneration {
     private static bool IsValidPoint(Vector2 point, Vector2 region) {
         return point.x >= 0 && point.y >= 0 && point.x < region.x && point.y < region.y;
     }
-    
+
     private static bool poisson_valid(Vector2 candidate, Vector2 regionSize, float cellSize, List<Vector2> points,
         int[,] grid, float radius) {
         // Check that the point is valid
@@ -82,5 +82,53 @@ public static class PointGeneration {
         }
 
         return true;
+    }
+
+    public static List<Vector2> improved_poisson_sampling(int numPoints, Vector2 regionSize, float radius,
+        int attempts = 30) {
+        float cellSize = radius / Mathf.Sqrt(2);
+
+        // A grid for
+        int[,] grid = new int[Mathf.CeilToInt(regionSize.x / cellSize), Mathf.CeilToInt(regionSize.y / cellSize)];
+        List<Vector2> points = new List<Vector2>();
+        List<Vector2> spawnPoints = new List<Vector2>();
+
+        spawnPoints.Add(regionSize / 2);
+        while (spawnPoints.Count > 0) {
+            int spawnIndex = Random.Range(0, spawnPoints.Count);
+            Vector2 spawnCenter = spawnPoints[spawnIndex];
+            bool candidateAccepted = false;
+
+            float seed = Random.value;
+            float epsilon = 0.000001f;
+
+            for (int i = 0; i < attempts; i++) {
+                // float angle = Random.value * Mathf.PI * 2; // Random radian angle
+                // Vector2 dir = new Vector2(Mathf.Sin(angle), Mathf.Cos(angle));
+                // Vector2 candidate = spawnCenter + dir * Random.Range(radius, radius * 2);
+                float theta = 2 * Mathf.PI * (seed + i / attempts);
+                float r = (radius * 2) + epsilon;
+                Vector2 dir = new Vector2(Mathf.Sin(theta), Mathf.Cos(theta));
+                Vector2 candidate = spawnCenter + r * dir;
+                // Vector2 candidate = new Vector2(
+                //     spawnCenter.x + r * Mathf.Sin(theta),
+                //     spawnCenter.y + r * Mathf.Cos(theta)
+                // );
+
+                if (poisson_valid(candidate, regionSize, cellSize, points, grid, radius)) {
+                    points.Add(candidate);
+                    spawnPoints.Add(candidate);
+                    grid[(int) (candidate.x / cellSize), (int) (candidate.y / cellSize)] = points.Count;
+                    candidateAccepted = true;
+                    break;
+                }
+            }
+
+            if (!candidateAccepted) {
+                spawnPoints.RemoveAt(spawnIndex);
+            }
+        }
+
+        return points;
     }
 }
