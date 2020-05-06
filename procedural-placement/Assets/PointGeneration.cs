@@ -108,7 +108,7 @@ public static class PointGeneration {
                 // Vector2 dir = new Vector2(Mathf.Sin(angle), Mathf.Cos(angle));
                 // Vector2 candidate = spawnCenter + dir * Random.Range(radius, radius * 2);
                 
-                float theta = 2 * Mathf.PI * (seed + i / attempts);
+                float theta = 2 * Mathf.PI * (seed + i / (float) attempts);
                 Vector2 candidate = spawnCenter + (radius + epsilon) * new Vector2(Mathf.Sin(theta), Mathf.Cos(theta));
                 
                 // Check that the point is valid, make the corresponding changes

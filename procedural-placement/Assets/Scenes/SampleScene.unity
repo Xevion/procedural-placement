@@ -150,9 +150,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   samplingMethod: 1
-  numPoints: 428
-  sphereSize: 0.18
-  regionSize: {x: 180, y: 100}
+  numPoints: 23
+  sphereSize: 4.3
+  regionSize: {x: 1945, y: 1000}
+  radius: 266.86
+  retryAttempts: 1503
+  drawSphere: 0
 --- !u!4 &2048189740
 Transform:
   m_ObjectHideFlags: 0
