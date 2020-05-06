@@ -48,6 +48,7 @@ public class PointRendering : MonoBehaviour {
             _retryAttempts = retryAttempts;
             
             // Handling for different types of point sampling methods
+            float t1 = Time.realtimeSinceStartup;
             switch (samplingMethod) {
                 case SamplingTypes.Random:
                     _points = PointGeneration.random_sampling(numPoints, regionSize);
@@ -63,6 +64,9 @@ public class PointRendering : MonoBehaviour {
                 default:
                     throw new ArgumentOutOfRangeException();
             }
+
+            float t2 = Time.realtimeSinceStartup;
+            Debug.Log($"{samplingMethod} generated in {t2 - t1:0.0000} seconds");
         }
     }
 
