@@ -41,7 +41,7 @@ public class PointRendering : MonoBehaviour {
                     _points = PointGeneration.random_sampling(numPoints, regionSize);
                     break;
                 case SamplingTypes.Poisson:
-                    _points = new List<Vector2>();
+                    _points = PointGeneration.poisson_sampling(numPoints, regionSize, 1, 30);
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
