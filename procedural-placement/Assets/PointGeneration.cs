@@ -8,15 +8,15 @@ public static class PointGeneration {
         for (var i = 0; i < numPoints; i++) {
             points.Add(
                 new Vector2(
-                    Random.Range(0, regionSize.x * 2),
-                    Random.Range(0, regionSize.y * 2)
+                    Random.Range(0, regionSize.x),
+                    Random.Range(0, regionSize.y)
                 ));
         }
 
         return points;
     }
 
-    public static List<Vector2> poisson_sampling(int numPoints, Vector2 regionSize, int radius, int attempts = 30) {
+    public static List<Vector2> poisson_sampling(int numPoints, Vector2 regionSize, float radius, int attempts = 30) {
         float cellSize = radius / Mathf.Sqrt(2);
 
         // A grid for
@@ -55,7 +55,7 @@ public static class PointGeneration {
     private static bool IsValidPoint(Vector2 point, Vector2 region) {
         return point.x >= 0 && point.y >= 0 && point.x < region.x && point.y < region.y;
     }
-
+    
     private static bool poisson_valid(Vector2 candidate, Vector2 regionSize, float cellSize, List<Vector2> points,
         int[,] grid, float radius) {
         // Check that the point is valid

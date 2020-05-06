@@ -19,29 +19,39 @@ public class PointRendering : MonoBehaviour {
     public float sphereSize = 1;
     [Tooltip("The Size of the region points are generated in")]
     public Vector2 regionSize = Vector2.one;
+    [Tooltip("The radius between each point in Poisson disc sampling")]
+    public float radius = 3;
+    [Tooltip("The number of attempts the sampling algorithm will give to place another point")]
+    public int retryAttempts = 30;
 
     // Store the previous value, only useful for the inspector
     private SamplingTypes _samplingMethod;
     private int _prevNumPoints;
     private Vector2 _prevRegionSize;
+    private float _radius;
+    private int _retryAttempts;
 
     private List<Vector2> _points;
     
     private void OnValidate() {
-        // Check to see if point position related values changed. CubeSize is rendering only, so we ignore it.
+        // Check to see if point position related values changed. SphereSize is rendering only, so we ignore it.
         if (numPoints != _prevNumPoints || _prevRegionSize != regionSize
-            || samplingMethod != _samplingMethod) {
-            // Update the tracking values
+            || samplingMethod != _samplingMethod || radius != _radius || retryAttempts != _retryAttempts) {
+            // Update the property tracking values
             _prevNumPoints = numPoints;
             _prevRegionSize = regionSize;
             _samplingMethod = samplingMethod;
-
+            _radius = radius;
+            _retryAttempts = retryAttempts;
+            
+            // Handling for different types of point sampling methods
             switch (samplingMethod) {
                 case SamplingTypes.Random:
                     _points = PointGeneration.random_sampling(numPoints, regionSize);
                     break;
                 case SamplingTypes.Poisson:
-                    _points = PointGeneration.poisson_sampling(numPoints, regionSize, 1, 30);
+                    _points = PointGeneration.poisson_sampling(numPoints, regionSize, radius, retryAttempts);
+                    numPoints = _points.Count;
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
@@ -52,12 +62,12 @@ public class PointRendering : MonoBehaviour {
     private void OnDrawGizmos() {
         // Draw a wireframe around the entire region
         Gizmos.DrawWireCube(this.transform.position,
-            new Vector3(regionSize.x * 2 + sphereSize, regionSize.y * 2 + sphereSize, sphereSize));
+            new Vector3(regionSize.x + sphereSize, regionSize.y + sphereSize, sphereSize));
 
         // Render spheres at every point
         if (_points == null) return;
         var pos = transform.position;
         foreach (var point in _points)
-            Gizmos.DrawSphere(new Vector3(point.x + pos.x, point.y + pos.y, pos.z), sphereSize);
+            Gizmos.DrawSphere(new Vector3(point.x + pos.x - (regionSize.x / 2), point.y + pos.y - (regionSize.y / 2)), sphereSize);
     }
 }
