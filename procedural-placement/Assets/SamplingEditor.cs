@@ -59,7 +59,7 @@ public class SamplingEditor : Editor {
         // Handling for different types of point sampling methods
         if (regenerate) {
             float t1 = Time.realtimeSinceStartup;
-            points.regeneratePoints();
+            points.RegeneratePoints();
             float t2 = Time.realtimeSinceStartup;
             this._message = $"{points.points.Count:n0} points in {t2 - t1:0.0000}s";
         }

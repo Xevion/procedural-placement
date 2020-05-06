@@ -33,22 +33,8 @@ public class PointRendering : MonoBehaviour {
     private int _retryAttempts;
 
     public List<Vector2> points;
-    
-    public void OnValidate() {
-        Debug.Log("Firing onValidate!");
-        // Check to see if point position related values changed. SphereSize is rendering only, so we ignore it.
-        if (numPoints != _prevNumPoints || _prevRegionSize != regionSize
-            || samplingMethod != _samplingMethod || radius != _radius || retryAttempts != _retryAttempts) {
-            // Update the property tracking values
-            _prevNumPoints = numPoints;
-            _prevRegionSize = regionSize;
-            _samplingMethod = samplingMethod;
-            _radius = radius;
-            _retryAttempts = retryAttempts;
-        }
-    }
 
-    public void regeneratePoints() {
+    public void RegeneratePoints() {
         switch (samplingMethod) {
             case SamplingTypes.Random:
                 points = PointGeneration.random_sampling(numPoints, regionSize);
