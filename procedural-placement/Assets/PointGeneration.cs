@@ -100,16 +100,14 @@ public static class PointGeneration {
             bool candidateAccepted = false;
 
             float seed = Random.value;
-            float epsilon = 0.000001f;
+            float epsilon = 0.000000001f;
 
             for (int i = 0; i < attempts; i++) {
                 // float angle = Random.value * Mathf.PI * 2; // Random radian angle
                 // Vector2 dir = new Vector2(Mathf.Sin(angle), Mathf.Cos(angle));
                 // Vector2 candidate = spawnCenter + dir * Random.Range(radius, radius * 2);
                 float theta = 2 * Mathf.PI * (seed + i / attempts);
-                float r = radius + epsilon;
-                Vector2 dir = new Vector2(Mathf.Sin(theta), Mathf.Cos(theta));
-                Vector2 candidate = spawnCenter + r * dir;
+                Vector2 candidate = spawnCenter + (radius + epsilon) * new Vector2(Mathf.Sin(theta), Mathf.Cos(theta));
                 // Vector2 candidate = new Vector2(
                 //     spawnCenter.x + r * Mathf.Sin(theta),
                 //     spawnCenter.y + r * Mathf.Cos(theta)
