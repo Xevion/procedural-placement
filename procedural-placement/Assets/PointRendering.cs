@@ -24,6 +24,8 @@ public class PointRendering : MonoBehaviour {
     public float radius = 3;
     [Tooltip("The number of attempts the sampling algorithm will give to place another point")]
     public int retryAttempts = 30;
+    [Tooltip("Draw a wireframe sphere showing the radius between each sphere.")]
+    public bool drawSphere = false;
 
     // Store the previous value, only useful for the inspector
     private SamplingTypes _samplingMethod;
@@ -72,7 +74,12 @@ public class PointRendering : MonoBehaviour {
         // Render spheres at every point
         if (_points == null) return;
         var pos = transform.position;
-        foreach (var point in _points)
-            Gizmos.DrawSphere(new Vector3(point.x + pos.x - (regionSize.x / 2), point.y + pos.y - (regionSize.y / 2)), sphereSize);
+        foreach (var point in _points) {
+            var center = new Vector3(point.x + pos.x - (regionSize.x / 2), point.y + pos.y - (regionSize.y / 2));
+            Gizmos.DrawSphere(center,
+                sphereSize);
+            if(drawSphere)
+                Gizmos.DrawWireSphere(center, radius / 2);
+        }
     }
 }

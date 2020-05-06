@@ -86,9 +86,8 @@ public static class PointGeneration {
 
     public static List<Vector2> improved_poisson_sampling(int numPoints, Vector2 regionSize, float radius,
         int attempts = 30) {
-        float cellSize = radius / Mathf.Sqrt(2);
+        float cellSize = radius / Mathf.Sqrt(2); // Size of each cell in the region
 
-        // A grid for
         int[,] grid = new int[Mathf.CeilToInt(regionSize.x / cellSize), Mathf.CeilToInt(regionSize.y / cellSize)];
         List<Vector2> points = new List<Vector2>();
         List<Vector2> spawnPoints = new List<Vector2>();
@@ -100,19 +99,19 @@ public static class PointGeneration {
             bool candidateAccepted = false;
 
             float seed = Random.value;
-            float epsilon = 0.000000001f;
-
+            float epsilon = 0.0000001f;
+            
+            // Try to place a new point near
             for (int i = 0; i < attempts; i++) {
+                // Old poisson sampling math
                 // float angle = Random.value * Mathf.PI * 2; // Random radian angle
                 // Vector2 dir = new Vector2(Mathf.Sin(angle), Mathf.Cos(angle));
                 // Vector2 candidate = spawnCenter + dir * Random.Range(radius, radius * 2);
+                
                 float theta = 2 * Mathf.PI * (seed + i / attempts);
                 Vector2 candidate = spawnCenter + (radius + epsilon) * new Vector2(Mathf.Sin(theta), Mathf.Cos(theta));
-                // Vector2 candidate = new Vector2(
-                //     spawnCenter.x + r * Mathf.Sin(theta),
-                //     spawnCenter.y + r * Mathf.Cos(theta)
-                // );
-
+                
+                // Check that the point is valid, make the corresponding changes
                 if (poisson_valid(candidate, regionSize, cellSize, points, grid, radius)) {
                     points.Add(candidate);
                     spawnPoints.Add(candidate);
@@ -122,6 +121,7 @@ public static class PointGeneration {
                 }
             }
 
+            // If no suitable new point could be found, remove it from the running
             if (!candidateAccepted) {
                 spawnPoints.RemoveAt(spawnIndex);
             }
