@@ -66,7 +66,7 @@ public class PointRendering : MonoBehaviour {
             }
 
             float t2 = Time.realtimeSinceStartup;
-            Debug.Log($"{samplingMethod} generated in {t2 - t1:0.0000} seconds");
+            Debug.Log($"{samplingMethod} generated {_points.Count:n0} points in {t2 - t1:0.0000} seconds");
         }
     }
 
