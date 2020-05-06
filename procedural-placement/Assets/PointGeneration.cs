@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using NUnit.Framework.Constraints;
 using UnityEngine;
 
 public static class PointGeneration {
@@ -11,7 +10,7 @@ public static class PointGeneration {
                 new Vector2(
                     Random.Range(0, regionSize.x * 2),
                     Random.Range(0, regionSize.y * 2)
-            ));
+                ));
         }
 
         return points;
@@ -35,7 +34,7 @@ public static class PointGeneration {
                 float angle = Random.value * Mathf.PI * 2; // Random radian angle
                 Vector2 dir = new Vector2(Mathf.Sin(angle), Mathf.Cos(angle));
                 Vector2 candidate = spawnCenter + dir * Random.Range(radius, radius * 2);
-
+                
                 if (poisson_valid(candidate, regionSize, cellSize, points, grid, radius)) {
                     points.Add(candidate);
                     spawnPoints.Add(candidate);
@@ -56,6 +55,7 @@ public static class PointGeneration {
     private static bool IsValidPoint(Vector2 point, Vector2 region) {
         return point.x >= 0 && point.y >= 0 && point.x < region.x && point.y < region.y;
     }
+
     private static bool poisson_valid(Vector2 candidate, Vector2 regionSize, float cellSize, List<Vector2> points,
         int[,] grid, float radius) {
         // Check that the point is valid
@@ -71,16 +71,16 @@ public static class PointGeneration {
 
         for (int x = searchStartX; x <= searchEndX; x++) {
             for (int y = searchStartY; y <= searchEndY; y++) {
+                // Acquire the index of the point responsible
                 int pointIndex = grid[x, y] - 1;
-                 if (pointIndex == -1) continue;
-                
+                if (pointIndex == -1) continue; // Don't calculate
+
                 float sqrDst = (candidate - points[pointIndex]).sqrMagnitude;
-                if (sqrDst < radius * radius) {
+                if (sqrDst < radius * radius)
                     return false;
-                }
             }
         }
-        
+
         return true;
     }
 }

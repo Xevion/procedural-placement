@@ -149,9 +149,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 95149e3ad64fa7149affeaeb9f8e273b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  numPoints: 50000
-  cubeSize: 0.1
-  regionSize: {x: 50, y: 50}
+  samplingMethod: 1
+  numPoints: 428
+  sphereSize: 0.18
+  regionSize: {x: 180, y: 100}
 --- !u!4 &2048189740
 Transform:
   m_ObjectHideFlags: 0
