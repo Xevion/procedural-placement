@@ -10,27 +10,13 @@ public enum SamplingTypes {
 
 public class PointRendering : MonoBehaviour {
     public String seed = "";
-    [Tooltip("The sampling method used to generate points")]
     public SamplingTypes samplingMethod = SamplingTypes.Random;
-    [Tooltip("The number of points (spheres) placed inside the region")]
     public int numPoints = 100;
-    [Tooltip("The size of the rendered spheres")]
     public float sphereSize = 1;
-    [Tooltip("The Size of the region points are generated in")]
     public Vector2 regionSize = Vector2.one;
-    [Tooltip("The radius between each point in Poisson disc sampling")]
     public float radius = 3;
-    [Tooltip("The number of attempts the sampling algorithm will give to place another point")]
     public int retryAttempts = 30;
-    [Tooltip("Draw a wireframe sphere showing the radius between each sphere.")]
-    public bool drawSphere = false;
-
-    // Store the previous value, only useful for the inspector
-    private SamplingTypes _samplingMethod;
-    private int _prevNumPoints;
-    private Vector2 _prevRegionSize;
-    private float _radius;
-    private int _retryAttempts;
+    public bool drawSphere;
 
     public List<Vector2> points;
 
